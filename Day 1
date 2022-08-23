@@ -1,0 +1,112 @@
+74. Search a 2D Matrix
+Integers in each row are sorted from left to right.
+The first integer of each row is greater than the last integer of the previous row.
+
+ (Golang)
+
+1. (Golang) First approch (linearly traverse on matrix) 
+TC - o(mxn)
+
+func searchMatrix(matrix [][]int, target int) bool {
+    rows:=len(matrix)
+    col:=len(matrix[0])
+    found:=false
+    for i:=0;i<rows;i++{
+        if matrix
+        for j:=0;j<col;j++{
+            if matrix[i][j]== target{
+                found=true
+                return found
+            }
+        }
+    }
+    return found
+}
+
+2. (Golang) First pointer put at first row and second pointer put at first row last column, if the target then it's availble down else on left.
+
+func searchMatrix(matrix [][]int, target int) bool {
+    rows:=len(matrix)
+    col:=len(matrix[0])  
+    i:=0
+    j:=col-1
+    
+    for i<rows && j>=0{
+        if matrix[i][j] ==target{
+            return true
+        }
+        if matrix[i][j] >target{
+            j--
+        }else{
+            i++
+        }
+        
+    }
+    return false   
+}
+
+3. (Golang) We can use binary search in matrix, We need to give imagegynary index then we need to calculate the mid
+  mid/column and mid%column this give index where mid is presend. 
+
+  TC- log(nxm) bz we are doing binary search on nxm element  SC- o(1)
+
+  func searchMatrix(matrix [][]int, target int) bool {
+    rows:=len(matrix)
+    col:=len(matrix[0])
+    lo:=0
+    hi:=(rows*col)-1
+    
+    for lo<=hi{
+        mid:=(lo+hi)/2
+        
+        if matrix[mid/col][mid%col] == target{
+            return true
+        }
+        
+        if matrix[mid/col][mid%col] < target{
+           lo=mid+1
+        }else{
+            hi =mid-1
+        }
+    }
+    
+    return false   
+}
+
+
+169. Majority Element
+
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+Input: nums = [3,2,3]
+Output: 3
+
+1 Approch use map and store the element with count after that check the count greanter than n/2
+
+2 Approch
+
+Moore Voting Algorithm
+
+
+func majorityElement(nums []int) int {
+    count:=0
+    element:=0
+    
+    for _,num:=range nums{
+        
+        if count==0{
+            element=num
+        }
+        
+        if num==element{
+            count++
+        }else{
+            count--
+        }
+    }
+    
+    return element
+    
+}
