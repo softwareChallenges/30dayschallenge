@@ -1,0 +1,155 @@
+229. Majority Element II
+
+Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+Example 1:
+
+Input: nums = [3,2,3]
+Output: [3]
+
+1 Apporch
+ pick one element check in the entire array how many time it's comes if it's more than n/3 times then it's majority element
+
+ TC o(n2)
+ SC o(1)
+
+2 Apporch
+ Use the  MAP to store the element and respective count of element if count is more thant n/3 time that element is majority element.
+
+ TC o(nlogn)
+ SC o(n)
+
+ 3.Approch
+
+ Booye Moore Algorithm
+
+1. Here we have number and there coumt when we are getting the same number we increasing the count and when we found another element we are decreasing the count.
+
+ 
+ func majorityElement(nums []int) []int { 
+    num1:=-1
+    num2:=-1
+    count1:=0
+    count2:=0
+    n:=len(nums)
+    
+    for _,num:=range nums{        
+        if num==num1{
+            count1++
+        }else if num ==num2{
+            count2++
+        }else if count1==0{
+            num1=num
+            count1=1
+        }else if count2 ==0{
+            num2=num
+            count2=1
+        }else{
+            count1--
+            count2--
+        }
+    }
+    count1=0
+    count2=0
+     var ans []int
+        for _,num:=range nums{
+            if num==num1{
+            count1++
+        
+            }else if num == num2{
+                count2++
+            } 
+         
+        }
+            if count1>n/3{
+                ans= append(ans,num1)
+            }
+            if count2>n/3{
+                ans= append(ans,num2)
+            } 
+          return ans  
+}
+
+
+Question
+
+50. Pow(x, n)
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+
+1 Apporch 
+TC:-o(N)
+SC:-o(1)
+
+if the n is negative then we need to do 1/x^n
+n will pe positve interger oe negative integer
+
+range of integer will -2,147,488.647 to 2,147,488,648
+
+this need to take care when we convert(647) x^-n to x^n(648)
+
+func myPow(x float64, n int) float64 {
+    count:=int(x)
+    for i:=1;i<n;i++{
+        count=int(x)*count
+    } 
+    
+    return float64(count)
+    
+}
+
+2  optimize Approch
+
+x^n
+1.2^10--> (2x2)^5 -->4^5
+  x multiple with itself power divided by two
+2.4^5 --> 4  x 4^4
+3.4^4--> (4x4)^2 -->(16)^2
+4.16^2-->(16x16)^1 -->256^1
+5.256 -->256 x256^0-->256
+
+
+when the n is even then multiple the x with itself and divide the power by 2
+when the n is odd then multple ans with x and reduse the n by 1
+when n is zero we are stop
+
+when is n negative the do 1/x^n
+
+TC -->o(logn) because n is dived by 2
+when it is odd it is reduced by 1 which makes it as even number at the next step.
+
+
+func myPow(x float64, n int) float64 {
+    ans:=1.0
+    nn:=n
+    if nn<0 {
+        nn=-1*nn
+    }
+    for(nn>0){
+        if(nn%2==1){
+            ans=ans*x
+            nn=nn-1
+        }else{
+            x=x*x
+            nn=nn/2    
+        }
+    }
+    if n<0{
+        ans= 1/ans
+    }
+    return ans
+}
+
+//2^10  x=4 nn=5
+//ans=4 nn=4
+//x=16 nn=2
+//x=256 nn=1
+//ans= 256*16 nn=0
+//1024
+
+
+
+
