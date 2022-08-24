@@ -88,7 +88,14 @@ Output: 3
 2 Approch
 
 Moore Voting Algorithm
+1. Here we have number and there coumt when we are getting the same number we increasing the count and when we found another element we are decreasing the count.
 
+
+7 7 5 7 5 1 | 5 7 | 5 5 7 7 |5 5 5 5 
+1 2 1 2 1 0   1 0   1 2 1 0  1 2 3 4
+-----------  ----- --------  -------
+
+    7          5       5       5
 
 func majorityElement(nums []int) int {
     count:=0
