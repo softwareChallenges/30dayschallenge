@@ -1,0 +1,94 @@
+1. Two Sum
+
+Question
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+
+1 Approach using two loop
+
+
+for (int i = 0; i < nums.size(); ++i) {
+   	 for (int j = i + 1; j < nums.size(); ++j) {
+   		 if (nums[i] + nums[j] == target) {
+   			 return i,j
+   		 }
+   	 }
+
+TC O(N2)
+SC o(1)
+
+
+2. Approach using hashtable /map
+
+Explanation:-
+
+2,6,5,8,11  target 14 
+
+first pointer is on 2 sub 14-2=12 now check 12 is presend in the map if not not put 2 with there index
+second pointer goes to 6 sub 14-6=8 now check 8 is presend or not if not put 6 with there index (6,1)
+third pointer goes to 5 sub 14-5=9 now check 8 is presend or not if not put 5 with there index (5,2)
+third pointer goes to 8 sub 14-8=6 now check 6 is presend yes its presend then take 6 index from map and 8 index from i 
+
+Code:-
+
+func twoSum(nums []int, target int) []int {
+ 
+    hashMap:=make(map[int]int)
+    
+    for i:=0;i<len(nums);i++{
+        
+        value:= target - nums[i]
+        
+        if  val,ok:=hashMap[value];ok{
+            return[]int{val,i}
+            
+        }else{
+            hashMap[nums[i]]=i
+        }
+    }
+    return nil
+}
+
+TC o(N)
+SC o(N)
+
+
+2. 4 Sum
+
+Question:-
+
+Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+nums[a] + nums[b] + nums[c] + nums[d] == target
+
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+
+1 Approach
+
+Explanation
+4,3,3,4,4,2,1,2,1,1  target 9
+
+sort
+1,1,1,2,2,3,3,4,4,4
+
+We need to sort the array. Then take three pointers add them and sub it from the target and result search in the remaining array
+1,1,1==3  9-3=6 6 is not present between 2-4 search using binary search so increase k
+
+1,1,2=4  9-4=5 no
+1,1,2=4  no
+1,1,3=5   9-5=4 4 is found so we get first array[1,1,3,4] sum is 9
+1,1,4=6   9-6=3 so in the right half we don't get 3 so no
+
+next we need to increase j
+
+next we need to increase i
+
+
+Tc o(N3) for 3 loop
+logN for binary search
+sorting NlogN
+
+TC-N3logN+NlogN
+SC-o(1)
