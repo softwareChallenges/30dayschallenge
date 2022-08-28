@@ -1,0 +1,157 @@
+
+Question 1:
+
+128. Longest Consecutive Sequence
+
+Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.You must write an algorithm that runs in O(n) time.
+Example 1:
+
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+
+
+1 Approach:-
+
+Explanation:-
+102,4,100,1,101,3,2
+
+	1.sort the array 
+	  1,2,3,4,100,101,102
+	2.linearly iterate on that and find the hightest consecutive sequence
+
+Cpmplexity:-
+	Tc:- NlogN+ o(N)
+	SC:- o(N)--if using the merge sort
+
+Code:-
+
+	func longestConsecutive(nums []int) int {
+	            
+	    //1,2,3,4,100,101,102
+
+	    sort.Ints(nums)
+	    count:=1
+	    prev:=nums[0]
+	    ans:=1
+	    
+	    for i:=1;i<len(nums);i++{
+	        
+	        if nums[i]==prev+1{
+	            count++
+	        }else if nums[i] != prev{
+	            count=1
+	        }
+	        prev= nums[i]
+	        ans=int(math.Max(float64(ans),float64(count)))
+	        
+	    }
+	    return ans
+
+	
+    
+  2 Approch:-
+
+ Explanation:-
+  102,4,100,1,101,3,2
+
+  1. Add this to map
+  2. Again iterate form the array linearly and check if 1 lesser than 102 i.e 101 is available in the map if yes don't do anaything
+     For 4 3 is avalable don't do anything
+     For 100 99 is not available in map we need to do somthing
+     check if 101 is there yes, 102 yes 103 No so 100,101,102 three consecutive sequence is there so count is 3
+     for 1 0 is not in map  then 2 yes, 3 yes 4 yes 5 no count is 4 this is longest.
+
+complexity
+     TC = O(N) for puting data to map +O(N) iteration doing on array+ o(N) this o(3N)
+     Sc = map o(N)
+
+Code :-
+
+	func longestConsecutive(nums []int) int {    
+	    //102,4,100,1,101,3,2
+	    elementMap := make(map[int]bool)
+		counter := 0
+		for _, num := range nums {
+			elementMap[num] = true
+		}
+		for _, num := range nums {
+			newCounter := 1
+			numcheck := num - 1
+			if _, ok := elementMap[numcheck]; ok {
+				continue
+			} else {
+				numCheck2 := num + 1
+				for elementMap[numCheck2] {
+					newCounter++
+					numCheck2 = numCheck2 + 1
+				}
+			}
+			if counter < newCounter {
+				counter = newCounter
+			}
+		}
+		return counter 
+	}
+
+
+Question 2:-
+3. Longest Substring Without Repeating Characters
+
+Given a string s, find the length of the longest substring without repeating characters.
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+
+1.Approch:-
+	a,b,c,a,a,b,c,d,b,a  
+	        l                    
+	          r
+
+	len=0
+
+	Explanation:-
+	1. Take the map ,for adding element and their index
+	2. let's take l,r at 'a'  len =r-l+1 s len=1 put 'a' to map with index(a,0) then move the r now r is at b
+	3. check b is presend in the map so put b in map (b,1) and cal culate the len =2
+	4. check c is presend in the map  so put c in map(c,2) and cal len=3
+	5. check a is presend in the map yes it's present and it's present at (a,o) position move l to 0+1 position and change the index of a (a,3)
+	6. again r is at a and a is presend in the map move l to 3+1=4 and change the index to 4
+	7. when we r move to b it'spresend in the map but but it's index is 2 which is not your range 4-5 so ignore it and change there index
+
+Code :-
+	func lengthOfLongestSubstring(s string) int {    
+	    charMap:=make(map[byte]int)
+	    left:=0
+	    right:=0
+	    lens:=0
+	    n:=len(s)
+	    for right<n {
+	        if val,ok:= charMap[s[right]];ok{  
+	            left=int(math.Max(float64(val+1),float64(left)))
+	        } 
+	        charMap[s[right]]=right
+	        lens=int(math.Max(float64(lens),float64(right-left+1)))
+	        right++
+	        
+	    }
+	    return lens  
+	}
+Complexity
+
+	TC-O(N)
+	SC -O(N)
+
+
+
+
+
+
+
+
+
+
+
+
