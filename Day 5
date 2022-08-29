@@ -1,0 +1,114 @@
+Question 1:-
+
+118. Pascal's Triangle
+
+Given an integer numRows, return the first numRows of Pascal's triangle.
+In Pascal's triangle, each number is the sum of the two numbers directly above.
+
+Explanation:-
+[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+
+1.If you see the first and last col conatin '1' so for everyrow we can add '1' at beginning and ending
+2.Store the last list (last row) in one new array now here in the current list if calculate the result from prev list
+3.and append into the final list
+
+
+func generate(numRows int) [][]int {
+    var finalList [][]int
+    var prev []int
+    for i:=0;i<numRows;i++{
+        var list []int
+        
+        for j:=0;j<=i;j++{
+            if j==0 ||j==i{
+                 list=append(list,1) 
+            }else{
+                result:= prev[j-1]+prev[j]
+                   list=append(list,result) 
+            }
+            
+        }  
+        prev=list
+        finalList=append(finalList,list)
+    }
+    return finalList
+}
+
+TC o(n2)
+SC o(n2)
+
+Question 2:
+8234. Palindrome Linked List
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+
+1 Approch
+
+Explanation:
+
+    1,2,3,3,2,1
+        s
+            f
+    1,2,3,1,2,3
+        s
+    1.Calculate the middle of the linklist using slow and fast pointer, when fast reached to second last node or last node thne slow pointer node is middle node of our linklist
+    2.Reverse the right half of the link list and point slow next to reverse half of the linklist
+    3.Move slow to right half which is starting for right half
+    4. Use the head for starting point of the left half
+
+
+code :-
+
+          type ListNode struct {
+              Val int
+              Next *ListNode
+          }
+         
+        func isPalindrome(head *ListNode) bool {
+            if head==nil ||head.Next==nil{
+                return true
+            }
+            slow:=head
+            fast:=head
+            
+            //find the middle of linklist
+            for fast.Next!=nil && fast.Next.Next !=nil{
+                slow=slow.Next
+                fast=fast.Next.Next
+            }
+            
+            //Reverse right half
+            slow.Next=reverseList(slow.Next)
+            
+            //move slow to right half
+            slow=slow.Next
+            
+            
+            //check lfet is equal to right half
+            for slow!=nil{
+                if slow.Val!=head.Val{
+                    return false
+                }
+                slow=slow.Next
+                head=head.Next
+            }
+            return true
+            
+        }
+
+        func reverseList(head *ListNode) *ListNode{
+            curr:=head
+            var prev,next *ListNode
+            
+            for curr !=nil{
+                next=curr.Next
+                curr.Next=prev
+                prev=curr
+                curr=next
+            }
+            head=prev
+            return head
+        }
+TC o(N/2) to find the middle of the linklist o(n/2) to reverse the right half of the link list , o(n/2) to comapre left and right half
+TC=o(n/2)+ o(n/2)+o(n/2)
+SC=o(1)
