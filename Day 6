@@ -1,0 +1,137 @@
+Question 1:-
+142. Linked List Cycle II
+Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+
+1 Approch
+
+Explanation
+
+1. hash the entire node in map while traversing linklist and check if node is alredy present in the map if yes then you get loop starting point.
+
+TC -o(n)
+Sc- o(n) hashing all the node
+
+Code :-
+#golang
+
+	func detectCycle(head *ListNode) *ListNode {
+	    node:=make(map[*ListNode]bool)	    
+	    for head !=nil{
+	        if _,ok:=node[head];ok{
+	            return head
+	        }
+	        node[head]=true
+	        head=head.Next
+	    }
+	    return nil   
+	}
+
+2 Approch:-
+
+Slow and fast pointer 
+
+Explanation:-
+		1. First find the collision between slow and fast pointer.
+		 why?
+		 //At some point if fast is bhind the slow f->s . and when again slow move one step fast is reached to slow and they collides. 
+
+		func hasCycle(head *ListNode) bool {
+		   slow := head
+		    fast := head
+		    for fast != nil && fast.Next != nil {
+		        slow = slow.Next
+		        fast = fast.Next.Next
+		        if slow == fast {
+		            return true
+		        }
+		    }
+		    return false
+		    
+		}
+
+		2 Now find the starting point , After collision of slow and fast pointer take one more pointer (e.g entrypoint) and move simultaniously entry pointer and slow pointer till they both collides.
+
+		  Take L1 distance from head to starting point of the loop
+		  L2 is the distance of slow traverse from starting point of the loop till it mets to fast pointer
+
+		  slow= l1+l2
+		  fast = l1+l2 and it will cover some etra turns let say nc (where c is the cyscle length and n is number of time loop on the cycle)
+		  fast =l1+l2 +nc
+
+		  2(l1+l2) =l1+l2+nc (fast is move twice of slow)
+
+		  l1+l2=nc
+		  l1=nc-l2
+
+		  so entry point point move by one it will met to slow pointer at starting of the loop
+
+
+complexity:-
+			Tc O(N)
+			Sc o(1)
+
+code :-
+#golang
+
+func detectCycle(head *ListNode) *ListNode {
+    if head ==nil || head.Next ==nil{
+        return nil
+    }
+    
+    slow:=head
+    fast:=head
+    entry:=head
+    
+    for fast.Next !=nil || fast.Next.Next !=nil{
+        slow=slow.Next
+        fast=fast.Next.Next
+        if slow==fast{
+            for slow !=entry{
+                slow=slow.Next
+                entry=entry.Next
+            }
+            return entry
+        }
+    }
+    return nil  
+}
+
+
+Question 2:-
+
+26. Remove Duplicates from Sorted Array
+    we need to find the unique values put in first place of array and return new length
+
+	Input: nums = [1,1,2]
+	Output: 2, nums = [1,2,_]
+	Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+	It does not matter what you leave beyond the returned k (hence they are underscores).
+
+
+Solution explanation:-
+
+ Approch 1:-
+
+ using two pointer 
+  if current pointer and next pointer are not matching 
+  current pointer move on step ahead and replace current pointer with next pointer
+
+ Code :-
+
+ func removeDuplicates(nums []int) int {
+    
+    i := 0
+    for  j := 1; j < len(nums); j++ {
+            if (nums[i] != nums[j]) {
+                i++
+                nums[i] = nums[j]
+            }
+        }
+        return i + 1
+}
+
+Tc o(n)
+sc o(1)
