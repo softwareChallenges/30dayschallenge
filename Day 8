@@ -1,0 +1,122 @@
+Question 1
+15. 3Sum (triplets)
+
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+
+1. Approch
+
+language;- Golang 
+
+Explanation:-
+Using three pointer i pointer we keep moving till n-2 becuase we need triplets
+Low is at i+1 and high is at length -1 
+Taking sum of i ,low, high pointer
+if low and high is created te trilet then increase low and high both
+for duplicates low and high loww++ high-- till low<high
+for dupliacate i if i and i-1 index is not same then continue
+
+
+func threeSum(nums []int) [][]int {
+    sort.Ints(nums)
+    n:=len(nums)
+    
+    var triplets [][]int
+    
+    for i:=0;i<n-2;i++{
+        if i==0 ||( i>0 &&nums[i]!=nums[i-1]){
+            low :=i+1
+            high:=n-1
+            sum:=0-nums[i] //a+b+c=0 i.e b+c=-a sum=0-a=-a
+            for low<high{
+                if nums[low]+nums[high]==sum{
+                    triplets=append (triplets,[]int{nums[i],nums[low],nums[high]})
+                    
+                    //after match
+                    //for remove low duplicates
+                    for low<high && nums[low]==nums[low+1]{
+                        low++
+                    }
+                    
+                    //for remove high duplicates
+                     for low<high && nums[high]==nums[high-1]{
+                        high++
+                    } 
+                    low++
+                    high--
+                }else if nums[low]+nums[high]<sum{
+                    low++
+                    
+                }else{
+                    high--
+                }
+            }
+        }
+        
+    }
+return triplets
+    
+    
+}
+
+
+
+Complexity:-
+TC o(NXN) -->first n to loop "a" ans sencond n for loop on the linear tarverse betweeen low and high
+Sc-o(1)
+
+
+
+Question 2; Recursion 
+
+90. Subsets II
+
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+
+lang:- Golang
+
+Number of subset = 2^n where n is length of the array
+
+exaple [1,1,2,2,2,3,3]
+func (next index nmber, list of subset)
+
+1. create the zero sized list with index 0
+2. When you wnat to create the 1 sized array what are the option 
+3. Take the zero index value every time you call the recursion think that you generating list of sized one and second recurion list of sized two and so on
+4. To remove duplicates we need to check that same list should not come is every recursion example one sized recurion 2 2 come two time only for firt two call the recursion call and skip for next two.
+5. Now we are extending the sized of list for every index value example f(1 ,[1]) 1 index we have possibily to make to two list array.
+6. second recursion for the list of sized two 
+
+sudo code:-
+
+func(index,ds) ds of size s 
+
+
+
+func subsetsWithDup(nums []int) [][]int {
+    var result = make([][]int, 0)
+    var subset = make([]int, 0)
+    sort.Ints(nums)
+    backtracking(nums, &result, subset, 0)
+    return result
+}
+
+func backtracking(nums[]int, result *[][]int, subset []int, id int) {
+    var tmp = make([]int, len(subset))
+    copy(tmp, subset)
+    *result = append(*result, tmp)
+    
+    for i := id; i < len(nums); i++ {
+        if i > id && nums[i] == nums[i-1] {
+            continue
+        }
+        subset = append(subset, nums[i])
+        backtracking(nums, result, subset, i+1)
+        subset = subset[: len(subset)-1]
+    }
+}s
+
+in the next recursion index =index+1 and ds size= ds+1
+
