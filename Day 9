@@ -1,0 +1,128 @@
+Question 1:-540. Single Element in a Sorted Array
+
+Topic := Binary Search
+lang - golang
+
+
+You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
+
+Input: nums = [1,1,2,3,3,4,4,8,8]
+Output: 2
+
+
+Explanation:-
+
+1 Approach:-
+
+Take xor of all the element 1^1 =0  arrays xor is zero for similar element and remaining only the one element here 2^0 =2 (0 for all other element xor is zero
+
+func singleNonDuplicate(nums []int) int {
+    elem:=0 
+    for i:=0;i<len(nums);i++{
+        elem=elem^nums[i]   
+    }  
+    return elem
+}
+
+Tc- o(N)
+SC:-o(1)
+
+2 Approach
+0 1 2 3 4 5 6 7 8
+1,1|2,3,3,4,4,5,5
+E O   O E
+
+0 1 2 3 4 5 6 7 8
+L     M       H
+
+L M H 
+
+1. left of break point all the element appers twice and right of it single element and then follw with element appers twice.
+2. Left half 1 instance is Even index and 2 is odd index
+4, Right half 1 instance of the element is odd index and 2 is even index
+5  Now find out the breakpoint, Apply binary search, take low and high index(at second last element)  and calculate the mid of the array.
+6. check mid in the left half or not (e.g mid value is 3 at 3 index check left half cond. means 1 instance is even) so this is not satisfied reduce the high value high=mid-1
+7  NoW mid at 1 index which satisfied the left half condition .
+8. if low > high we need to stop and there here low is at imediately after  left half and high imediatly after tr right half . we know that immediatly after left half single element is present
+9. We know laft is diverse at single elemet a[low]
+
+// when we need to calculate the odd / even index to satisfied the left half condition if we do mid^1 (mid is odd) we get even index before odd same for even
+
+func singleNonDuplicate(nums []int) int {
+    
+    low:=0
+    high:=len(nums)-2
+    
+    for low<= high{
+        
+        mid:=(low+high)/2
+        if nums[mid] ==nums[mid^1]{
+            low = mid+1
+        }else{
+            high=mid-1
+        }
+        
+    }
+    return nums[low]
+    
+}
+
+TC o(log n) -->binary search
+SC O(1)
+
+Question 2: Rotated Sorted Array
+
+Topic := Binary search
+Lang:= Golang
+
+
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+
+1 Approach :
+linear search and find the target 
+
+TC := o(N)
+SC  := o(1)
+
+2 Approach
+
+
+
+1. Take the low ,high , and calculate the mid
+2.compare mid with the target value
+3. Check the left half is sorted or not (low <mid)
+4. check your target appeares at  left  if not 
+5. search in right halt but first check it's sorted or not
+
+
+TC := o(N)
+SC := o(1)
+
+func search(nums []int, target int) int {
+    low:=0
+    high:= len(nums)-1
+    for low<=high{
+            mid:=(low+high)/2
+            if nums[mid] ==target{
+                return mid
+            }
+        // the left side is sorted or not <= if only one element in the left side
+            if nums[low]<=nums[mid]{
+                if target >=nums[low] && target<=nums[mid]{
+                    high=mid-1
+                }else {
+                  low=mid+1   
+                }
+                //right half is sorted
+            }else{
+                if target >=nums[mid] && target<=nums[high]{
+                   low =mid+1
+                }else {       
+                  high= mid-1 
+                }               
+            }
+    }
+    return -1
+}
+
